@@ -46,8 +46,11 @@ fun main() {
         }"
     )
 
-
     println("twoSum ${twoSum(intArrayOf(2, 7, 11, 15), 9)}")
+
+    println()
+    println("wordSubset ${wordSubsets(arrayOf("amazon","apple","facebook","google","leetcode"), arrayOf("lo","eo"))}")
+//    println("wordSubset ${wordSubsets(arrayOf("acaac","cccbb","aacbb","caacc","bcbbb"), arrayOf("c","cc", "b"))}")
 }
 
 private fun dailyTemperatures(temperatures: IntArray): IntArray {
@@ -108,6 +111,41 @@ private fun twoSum(numbers: IntArray, target: Int): IntArray {
             result[1] = r + 1
             break
         }
+    }
+
+    return result
+}
+
+private fun wordSubsets(words1: Array<String>, words2: Array<String>): List<String> {
+    val result = mutableListOf<String>()
+
+    val map = hashMapOf<Char, Int>()
+    words2.forEach {
+        it.forEach {
+            map[it] = (map[it] ?: 0) + 1
+        }
+    }
+
+    val valid = hashMapOf<Char, Int>()
+    words1.forEach { word ->
+        word.forEach {
+            valid[it] = (valid[it] ?: 0) + 1
+        }
+
+        var put = false
+        for ((k, v) in map) {
+            if (valid.containsKey(k) && valid[k]!! >= v) {
+                put = true
+            } else {
+                put = false
+                break
+            }
+        }
+
+        if (put) {
+            result.add(word)
+        }
+        valid.clear()
     }
 
     return result
